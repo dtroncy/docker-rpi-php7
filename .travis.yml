@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+language: bash
+env:
+  - php7_version=7.2.10-r0
+script:
+# prepare qemu
+  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# build image
+  - docker build --build-arg php7_version=$php7_version -t dtroncy/rpi-php7 .
+# push image
+  - >
+    if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+      docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+      docker tag dtroncy/rpi-php7 dtroncy/rpi-php7:$php7_version
+      docker push dtroncy/rpi-php7:$php7_version
+      docker push dtroncy/rpi-php7
+    fi
