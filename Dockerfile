@@ -1,4 +1,4 @@
-FROM dtroncy/rpi-apache:2.4.35-r0
+FROM dtroncy/rpi-apache:2.4.41-r0
 
 ARG php7_version
 
